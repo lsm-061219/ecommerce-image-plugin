@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="460" viewBox="0 0 760 460" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f5f7fb"/>
+    </linearGradient>
+    <linearGradient id="card1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dbeafe"/>
+      <stop offset="1" stop-color="#bfdbfe"/>
+    </linearGradient>
+    <linearGradient id="card2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fed7aa"/>
+      <stop offset="1" stop-color="#fdba74"/>
+    </linearGradient>
+    <linearGradient id="card3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#bbf7d0"/>
+      <stop offset="1" stop-color="#86efac"/>
+    </linearGradient>
+    <linearGradient id="card4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ddd6fe"/>
+      <stop offset="1" stop-color="#c4b5fd"/>
+    </linearGradient>
+  </defs>
+
+  <!-- OÈh—ã -->
+  <rect x="20" y="20" width="720" height="420" rx="16" fill="#ffffff" stroke="#e6e9f0" stroke-width="1.5"/>
+  <!-- ˜ -->
+  <rect x="20" y="20" width="720" height="44" rx="16" fill="url(#bar)"/>
+  <rect x="20" y="48" width="720" height="16" fill="url(#bar)"/>
+  <circle cx="48" cy="42" r="6" fill="#f87171"/>
+  <circle cx="68" cy="42" r="6" fill="#fbbf24"/>
+  <circle cx="88" cy="42" r="6" fill="#34d399"/>
+  <rect x="280" y="34" width="200" height="16" rx="8" fill="#eef0f4"/>
+
+  <!-- åw -->
+  <rect x="36" y="80" width="688" height="40" rx="10" fill="#ffffff" stroke="#e6e9f0"/>
+  <text x="52" y="105" font-size="13" fill="#1f2430" font-weight="600">=¼ þG„È</text>
+  <rect x="400" y="90" width="56" height="20" rx="6" fill="#eef0f4"/>
+  <rect x="462" y="90" width="56" height="20" rx="6" fill="#eef0f4"/>
+  <rect x="524" y="88" width="90" height="24" rx="6" fill="#3b82f6"/>
+  <text x="548" y="105" font-size="12" fill="#ffffff" font-weight="500">S ZIP</text>
+  <rect x="620" y="88" width="88" height="24" rx="6" fill="#3b82f6"/>
+  <text x="638" y="105" font-size="12" fill="#ffffff" font-weight="500">Shè</text>
+
+  <!-- þGQ< -->
+  <g>
+    <rect x="36" y="132" width="160" height="160" rx="10" fill="url(#card1)"/>
+    <rect x="36" y="132" width="160" height="160" rx="10" fill="none" stroke="#3b82f6" stroke-width="2"/>
+    <circle cx="50" cy="146" r="9" fill="#ffffff"/>
+    <path d="M50 142 l3 3 l6 -6" stroke="#3b82f6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <rect x="212" y="132" width="160" height="160" rx="10" fill="url(#card2)"/>
+
+    <rect x="388" y="132" width="160" height="160" rx="10" fill="url(#card3)"/>
+
+    <rect x="564" y="132" width="160" height="160" rx="10" fill="url(#card4)"/>
+  </g>
+
+  <!-- þG…¹þ -->
+  <g fill="#ffffff" opacity="0.85">
+    <rect x="56" y="170" width="120" height="90" rx="6"/>
+    <circle cx="86" cy="195" r="12"/>
+    <path d="M56 252 l30 -26 l22 18 l26 -22 l42 30 l0 14 l-120 0 z"/>
+  </g>
+  <g fill="#ffffff" opacity="0.85">
+    <rect x="232" y="170" width="120" height="90" rx="6"/>
+    <circle cx="262" cy="200" r="14"/>
+    <path d="M232 252 l40 -30 l26 20 l20 -18 l34 28 l0 14 l-120 0 z"/>
+  </g>
+  <g fill="#ffffff" opacity="0.85">
+    <rect x="408" y="170" width="120" height="90" rx="6"/>
+    <rect x="428" y="190" width="80" height="52" rx="6"/>
+  </g>
+  <g fill="#ffffff" opacity="0.85">
+    <rect x="584" y="170" width="120" height="90" rx="6"/>
+    <path d="M604 240 l20 -40 l24 30 l18 -22 l18 32 z"/>
+  </g>
+
+  <!-- ¶ -->
+  <rect x="36" y="308" width="688" height="28" rx="8" fill="#f5f7fb"/>
+  <circle cx="52" cy="322" r="5" fill="#16a34a"/>
+  <text x="64" y="326" font-size="12" fill="#5b6472">ò } 24  þG</text>
+  <text x="620" y="326" font-size="12" fill="#5b6472">ò	 12 / 24  </text>
+
+  <!-- }ŸÐ: -->
+  <rect x="260" y="352" width="240" height="40" rx="10" fill="#ffffff" stroke="#e6e9f0"/>
+  <text x="288" y="376" font-size="13" fill="#16a34a" font-weight="600"> SŒŸ 12  </text>
+</svg>

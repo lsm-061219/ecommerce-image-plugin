@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>电商图片下载助手 - 图片预览</title>
+  <link rel="stylesheet" href="viewer.css" />
+</head>
+<body>
+  <header class="toolbar">
+    <div class="toolbar-left">
+      <h1>🖼️ 图片预览</h1>
+      <span id="pageTitle" class="page-title" title=""></span>
+    </div>
+    <div class="toolbar-right">
+      <span id="stat" class="stat">0 / 0 张</span>
+      <button id="btnSelectAll" class="btn">全选</button>
+      <button id="btnInvert" class="btn">反选</button>
+      <button id="btnClear" class="btn">清空</button>
+      <button id="btnDownloadSelected" class="btn btn-primary">打包选中 (ZIP)</button>
+      <button id="btnDownloadAll" class="btn btn-primary">打包全部 (ZIP)</button>
+    </div>
+  </header>
+
+  <main id="grid" class="grid"></main>
+
+  <div id="empty" class="empty" hidden>
+    <p class="empty-icon">📭</p>
+    <p id="emptyText">未检测到图片</p>
+    <p class="empty-hint">请在电商商品详情页点击插件图标进行抓取。</p>
+  </div>
+
+  <footer class="statusbar">
+    <span id="status" class="status">就绪</span>
+    <span class="hint">提示：勾选图片后点击「打包选中」即可下载 ZIP；鼠标悬停单图可单独下载。</span>
+  </footer>
+
+  <script src="viewer.js"></script>
+</body>
+</html>

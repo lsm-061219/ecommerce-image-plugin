@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="电商图片下载助手 —— 一键抓取电商详情页全部图片，单张下载 PNG，多张打包 ZIP。" />
+  <title>电商图片下载助手 - 一键抓取详情页图片</title>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --accent: #f97316;
+      --text: #1f2430;
+      --text-dim: #5b6472;
+      --bg: #ffffff;
+      --bg-soft: #f5f7fb;
+      --border: #e6e9f0;
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(31, 36, 48, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ---------- 导航 ---------- */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .nav .logo .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: inline-block;
+    }
+
+    .nav .links { display: flex; gap: 24px; font-size: 14px; color: var(--text-dim); }
+    .nav .links a:hover { color: var(--primary); }
+
+    .nav .btn-download {
+      background: var(--primary);
+      color: #fff;
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.15s ease;
+    }
+    .nav .btn-download:hover { background: var(--primary-dark); }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 96px 24px 80px;
+      text-align: center;
+      background:
+        radial-gradient(1200px 500px at 50% -10%, rgba(59, 130, 246, 0.16), transparent 60%),
+        radial-gradient(800px 400px at 80% 10%, rgba(249, 115, 22, 0.12), transparent 55%),
+        var(--bg);
+    }
+
+    .hero .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #eef4ff;
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 .grad {
+      background: linear-gradient(120deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p.subtitle {
+      max-width: 560px;
+      margin: 0 auto 32px;
+      color: var(--text-dim);
+      font-size: 17px;
+    }
+
+    .hero .cta {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
+    }
+
+    .btn.ghost {
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn.ghost:hover { border-color: #cfd6e4; }
+
+    .hero .mock {
+      margin-top: 56px;
+      max-width: 760px;
+      border-radius: 16px;
+      box-shadow: 0 24px 60px rgba(31, 36, 48, 0.18);
+      border: 1px solid var(--border);
+    }
+
+    /* ---------- 特性 ---------- */
+    .section { padding: 72px 24px; max-width: 1100px; margin: 0 auto; }
+
+    .section .sec-head { text-align: center; margin-bottom: 44px; }
+    .section .sec-head h2 { font-size: 30px; margin-bottom: 10px; }
+    .section .sec-head p { color: var(--text-dim); }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .feature {
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .feature:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+
+    .feature .icon { font-size: 30px; margin-bottom: 14px; }
+    .feature h3 { font-size: 17px; margin-bottom: 8px; }
+    .feature p { color: var(--text-dim); font-size: 14px; }
+
+    /* ---------- 步骤 ---------- */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .step {
+      position: relative;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px;
+    }
+    .step .num {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .step h3 { font-size: 16px; margin-bottom: 8px; }
+    .step p { color: var(--text-dim); font-size: 14px; }
+
+    /* ---------- CTA ---------- */
+    .cta-band {
+      margin: 0 24px 72px;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      background: linear-gradient(135deg, var(--primary), #6d5dfc);
+      border-radius: 20px;
+      padding: 52px 32px;
+      text-align: center;
+      color: #fff;
+    }
+    .cta-band h2 { font-size: 28px; margin-bottom: 12px; }
+    .cta-band p { opacity: 0.9; margin-bottom: 26px; }
+    .cta-band .btn {
+      background: #fff;
+      color: var(--primary);
+    }
+
+    /* ---------- 页脚 ---------- */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+
+    /* ---------- 移动端 ---------- */
+    @media (max-width: 640px) {
+      .nav { padding: 12px 16px; }
+      .nav .links { display: none; }
+      .hero { padding: 56px 18px 48px; }
+      .hero h1 { font-size: 32px; }
+      .hero p.subtitle { font-size: 15px; }
+      .section { padding: 48px 18px; }
+      .section .sec-head h2 { font-size: 24px; }
+      .cta-band { margin: 0 18px 48px; padding: 36px 22px; }
+      .cta-band h2 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 导航 -->
+  <nav class="nav">
+    <div class="logo"><span class="dot"></span>电商图片下载助手</div>
+    <div class="links">
+      <a href="#features">功能特性</a>
+      <a href="#how">使用步骤</a>
+      <a href="#download">下载</a>
+    </div>
+    <a class="btn-download" href="#download">立即下载</a>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="badge">✨ 免费 · 开源 · 无需注册</div>
+    <h1>一键抓取详情页<br /><span class="grad">全部商品图片</span></h1>
+    <p class="subtitle">
+      在电商商品详情页点击插件图标，自动提取所有图片，集中预览，
+      单张下载 PNG，多张一键打包 ZIP，告别逐张「右键另存为」。
+    </p>
+    <div class="cta">
+      <a id="downloadBtn" class="btn primary" href="ecommerce-image-plugin.zip" download>⬇ 下载插件 ZIP</a>
+      <a class="btn ghost" href="#how">查看使用步骤</a>
+    </div>
+    <img class="mock" src="preview.svg" alt="插件效果预览图" />
+  </header>
+
+  <!-- 功能特性 -->
+  <section id="features" class="section">
+    <div class="sec-head">
+      <h2>功能特性</h2>
+      <p>为电商运营、商品采集、竞品分析场景而生</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="icon">🖼️</div>
+        <h3>全量抓取</h3>
+        <p>自动识别 img、懒加载、srcset 与背景图，不遗漏高清原图。</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🗂️</div>
+        <h3>集中预览</h3>
+        <p>新标签页网格化展示所有图片，勾选、全选、反选随心所欲。</p>
+      </div>
+      <div class="feature">
+        <div class="icon">⬇️</div>
+        <h3>单张 PNG</h3>
+        <p>鼠标悬停单图即可单独下载，文件名自动整理。</p>
+      </div>
+      <div class="feature">
+        <div class="icon">📦</div>
+        <h3>批量打包 ZIP</h3>
+        <p>勾选多张或全部图片，一键打包为 ZIP 压缩包。</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🔓</div>
+        <h3>跨域 / 防盗链</h3>
+        <p>后台读取 + 无 Referer 请求，绕过常见 CDN 防盗链。</p>
+      </div>
+      <div class="feature">
+        <div class="icon">📱</div>
+        <h3>轻量免费</h3>
+        <p>纯本地运行，不上传任何数据，保护你的隐私。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 使用步骤 -->
+  <section id="how" class="section">
+    <div class="sec-head">
+      <h2>三步上手</h2>
+      <p>从下载到抓图，只需一分钟</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>下载并解压</h3>
+        <p>下载 ZIP 并解压到本地任意目录。</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>加载扩展</h3>
+        <p>打开 Chrome 扩展管理页，开启「开发者模式」，选择「加载已解压的扩展程序」。</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>一键抓图</h3>
+        <p>打开商品详情页，点击插件图标，即可预览并下载图片。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 下载 CTA -->
+  <section id="download" class="cta-band">
+    <h2>准备好提升效率了吗？</h2>
+    <p>下载插件，开始批量获取商品图片。</p>
+    <a class="btn" href="ecommerce-image-plugin.zip" download>⬇ 立即下载 ZIP</a>
+  </section>
+
+  <footer class="footer">
+    电商图片下载助手 · 开源项目 · 仅供学习与合法用途
+  </footer>
+</body>
+</html>
