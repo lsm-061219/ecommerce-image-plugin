@@ -14,32 +14,47 @@ const VIEWER_URL = chrome.runtime.getURL('viewer/viewer.html');
 // 图标点击：抓取当前页图片
 // ---------------------------------------------------------------------------
 chrome.action.onClicked.addListener(async (tab) => {
-  try {
-    const resp = await chrome.tabs.sendMessage(tab.id, { type: 'EXTRACT_IMAGES' });
-    if (resp && resp.ok && resp.images && resp.images.length > 0) {
-      await chrome.storage.session.set({
-        images: resp.images,
-        pageTitle: tab.title || '',
-        pageUrl: tab.url || ''
-      });
-    } else {
-      await chrome.storage.session.set({
-        images: [],
-        pageTitle: tab.title || '',
-        pageUrl: tab.url || ''
-      });
-    }
-  } catch (err) {
-    // 受限页面（chrome:// 等）无法注入内容脚本，或脚本尚未就绪
-    await chrome.storage.session.set({
-      images: [],
-      pageTitle: tab.title || '',
-      pageUrl: tab.url || '',
-      error: '当前页面无法抓取（可能是浏览器内部页面或插件尚未加载）。请在普通网页刷新后重试。'
-    });
-  }
+  const result = await extractImages(tab);
+  await chrome.storage.session.set(result);
   await chrome.tabs.create({ url: VIEWER_URL });
 });
+
+/**
+ * 从当前标签页提取图片，返回写入 storage 的数据对象。
+ *   - 优先直接向已注入的内容脚本发消息；
+ *   - 若内容脚本未注入（页面在插件加载前就已打开），动态注入后重试，无需手动刷新；
+ *   - 若为浏览器内部页面（edge:// 等）无法注入，返回错误提示。
+ */
+async function extractImages(tab) {
+  const base = { pageTitle: tab.title || '', pageUrl: tab.url || '' };
+
+  try {
+    const resp = await chrome.tabs.sendMessage(tab.id, { type: 'EXTRACT_IMAGES' });
+    if (resp && resp.ok && resp.images) {
+      return { images: resp.images, ...base };
+    }
+    return { images: [], ...base };
+  } catch (err) {
+    // 内容脚本未注入，动态注入后重试一次
+    try {
+      await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: ['content.js']
+      });
+      const resp = await chrome.tabs.sendMessage(tab.id, { type: 'EXTRACT_IMAGES' });
+      if (resp && resp.ok && resp.images) {
+        return { images: resp.images, ...base };
+      }
+      return { images: [], ...base };
+    } catch (err2) {
+      return {
+        images: [],
+        ...base,
+        error: '当前页面无法抓取（浏览器内部页面不支持）。请在普通商品详情页点击插件图标。'
+      };
+    }
+  }
+}
 
 // ---------------------------------------------------------------------------
 // 消息路由：来自 viewer 页面的下载请求
